@@ -4,7 +4,7 @@ import math
 max_nr_nodes = 20
 max_nr_edges = max_nr_nodes * (max_nr_nodes - 1)
 resolution = 100
-no_tests = 10
+no_tests = 20
 input_dir = "input/"
 
 class vertex:
