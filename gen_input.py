@@ -50,5 +50,3 @@ def gen_input_files():
             for k in range(j + 1, max_nr_nodes):
                 f.write(str(j) + " " + str(k) + " " + str(adj_mat[j][k]) + "\n")
         f.close()
-
-gen_input_files()
