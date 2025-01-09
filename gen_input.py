@@ -9,8 +9,8 @@ input_dir = "input/"
 
 class vertex:
     def __init__(self):
-        self.x = round(random.uniform(0.0, 100.0), 1)
-        self.y = round(random.uniform(0.0, 100.0), 1)
+        self.x = round(random.uniform(10.0, 90.0), 1)
+        self.y = round(random.uniform(10.0, 90.0), 1)
 
     def __str__(self):
         return f"{self.x}, {self.y}"

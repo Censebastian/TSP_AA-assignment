@@ -58,4 +58,14 @@ write_gradations(-(side_length + side_length / 4 + line_width * 5/2 - font_size)
 write_gradations(side_length / 4, -(side_length / 2 + line_width), True)
 write_gradations(side_length / 4 + font_size, -(side_length / 2 + line_width + 3/2 * font_size), False)
 
+pen.up()
+pen.goto(-(side_length * 3/4 + line_width), side_length / 2 + line_width * 3 / 2)
+pen.write("Current evaluation", False, align="center", font=("Arial", 2 * font_size, "normal"))
+pen.down()
+
+pen.up()
+pen.goto(side_length * 3/4 + line_width, side_length / 2 + line_width * 3 / 2)
+pen.write("Best path", False, align="center", font=("Arial", 2 * font_size, "normal"))
+pen.down()
+
 screen.exitonclick()
