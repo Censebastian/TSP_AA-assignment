@@ -1,10 +1,12 @@
 import turtle as t
+import gen_input
 
 screen = t.Screen()
 screen.title("Travelling salesman")
 screen.bgcolor("grey")
 screen.screensize(1000, 1000)
 screen.colormode(255)
+screen.tracer(0)
 
 side_length = 500
 line_width = 3
@@ -12,7 +14,6 @@ font_size = 10
 vertex_size = 20
 
 pen = t.Turtle()
-pen.speed(0)
 pen.ht()
 pen.pensize(3)
 
@@ -35,6 +36,16 @@ def write_gradations(x, y, vertical):
             pen.write(str(gradation), False, align="right", font=("Arial", font_size, "normal"))
         pen.down()
 
+def adjust_coordinates(coord_arr, left_bound, bottom_bound):
+    scale_factor = side_length / 100
+    adjusted_coord = [0] * len(coord_arr)
+
+    for vertex in coord_arr:
+        new_x = left_bound + scale_factor * vertex.x
+        new_y = bottom_bound + scale_factor * vertex.y
+        adjusted_coord = gen_input.vertex(new_x, new_y)
+    return adjusted_coord
+
 def draw_vertex(x, y, color):
     pen.up()
     pen.goto(x - vertex_size / 2, y + vertex_size / 2)
@@ -56,13 +67,23 @@ def draw_vertex(x, y, color):
     pen.end_fill()
     pen.down()
 
-def draw_vertices(x_center, y_center, coord_arr, color):
-    left_bound = x_center - side_length / 2
-    bottom_bound = y_center - side_length / 2
-    scale_factor = side_length / 100
-
+def draw_vertices(coord_arr, color):
     for element in coord_arr:
-        draw_vertex(left_bound + element.x * scale_factor, bottom_bound + element.y * scale_factor, color)
+        draw_vertex(element.x, element.y, color)
+
+def draw_edge(x1, y1, x2, y2, color):
+    teleport(x1, y1)
+    pen.color(color)
+    pen.pensize(6)
+    pen.goto(x2, y2)
+    pen.color("black")
+
+def draw_edges(coord_arr, path, color):
+    for i in range(len(path)):
+        first_node = i % len(path)
+        second_node = (i + 1) % len(path)
+        draw_edge(coord_arr[first_node].x, coord_arr[first_node].y, coord_arr[second_node].x, coord_arr[second_node].y, color)
+        
 
 def init_graded_sqrs():
     teleport(-(side_length + side_length / 4 + line_width * 3/2), side_length / 2 + line_width / 2)
@@ -101,3 +122,6 @@ def init_graded_sqrs():
     pen.goto(side_length * 3/4 + line_width, side_length / 2 + line_width * 3 / 2)
     pen.write("Best path", False, align="center", font=("Arial", 2 * font_size, "normal"))
     pen.down()
+
+def draw_graphs():
+    
