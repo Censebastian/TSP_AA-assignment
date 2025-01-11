@@ -1,8 +1,13 @@
 import math
+import verify
 from itertools import permutations
 from gen_input import calc_adj_matrix, gen_vertices
 
 def tsp(dists):
+
+    if verify(dists) is not True:
+        print("Nu exista solutie")
+        return
 
     visited = []
     min_dist = []
