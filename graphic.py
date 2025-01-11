@@ -22,7 +22,6 @@ def teleport(x, y):
     pen.goto(x, y)
     pen.down()
 
-
 def write_gradations(x, y, vertical):
     nr_gradations = 5
     for i in range(nr_gradations + 1):
@@ -38,12 +37,13 @@ def write_gradations(x, y, vertical):
 
 def adjust_coordinates(coord_arr, left_bound, bottom_bound):
     scale_factor = side_length / 100
-    adjusted_coord = [0] * len(coord_arr)
+    adjusted_coord = []
 
     for vertex in coord_arr:
         new_x = left_bound + scale_factor * vertex.x
         new_y = bottom_bound + scale_factor * vertex.y
-        adjusted_coord = gen_input.vertex(new_x, new_y)
+        adjusted_coord.append(gen_input.vertex(new_x, new_y))
+
     return adjusted_coord
 
 def draw_vertex(x, y, color):
@@ -80,9 +80,9 @@ def draw_edge(x1, y1, x2, y2, color):
 
 def draw_edges(coord_arr, path, color):
     for i in range(len(path)):
-        first_node = i % len(path)
-        second_node = (i + 1) % len(path)
-        draw_edge(coord_arr[first_node].x, coord_arr[first_node].y, coord_arr[second_node].x, coord_arr[second_node].y, color)
+        first_node = coord_arr[i % len(path)]
+        second_node = coord_arr[(i + 1) % len(path)]
+        draw_edge(first_node.x, first_node.y, second_node.x, second_node.y, color)
         
 
 def init_graded_sqrs():
@@ -123,5 +123,28 @@ def init_graded_sqrs():
     pen.write("Best path", False, align="center", font=("Arial", 2 * font_size, "normal"))
     pen.down()
 
-def draw_graphs():
+def draw_graph(coord_arr, path, left_bound, bottom_bound, color):
+    adj_coords = adjust_coordinates(coord_arr, left_bound, bottom_bound)
+    if path != None:
+        draw_edges(adj_coords, path, color)
+    draw_vertices(adj_coords, color)
+
+def draw_temp_graph(coord_arr, path, left_bound, bottom_bound, color):
+    global pen
+    perm_turtle = pen
+    pen = t.Turtle()
+    adj_coords = adjust_coordinates(coord_arr, left_bound, bottom_bound)
+    if path != None:
+        screen.ontimer(draw_edges(adj_coords, path, color), 2000)
+    pen = perm_turtle
+    draw_vertices(adj_coords, color)
     
+def draw_graphs(coord_arr, current_path, correct_path, temp):
+    x_left = -(side_length * 5 / 4 + line_width)
+    x_right = side_length / 4 + line_width
+    y_right = y_left = -side_length / 2
+    if temp == True:
+        draw_temp_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
+    else:
+        draw_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
+    draw_graph(coord_arr, correct_path, x_right, y_right, (10, 230, 57))
