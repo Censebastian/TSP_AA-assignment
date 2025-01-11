@@ -33,14 +33,3 @@ def tsp(dists):
     
     last = visited[-1]
     min_dist[-1] = dists[last][start]
-    print("Minimum distace:", sum(min_dist))
-
-distances = [
-    [0, 20, 42, 25],
-    [20, 0, 30, 34],
-    [42, 30, 0, 10],
-    [25, 34, 10, 0]
-]
-distance = calc_adj_matrix(gen_vertices())
-
-tsp(distance)

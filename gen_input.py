@@ -1,10 +1,10 @@
 import random
 import math 
 
-max_nr_nodes = 20
+max_nr_nodes = 10
 max_nr_edges = max_nr_nodes * (max_nr_nodes - 1)
 resolution = 100
-no_tests = 20
+nr_tests = 20
 input_dir = "input/"
 
 class vertex:
@@ -42,7 +42,7 @@ def print_adj_matrix(adj_mat):
 
 def gen_input_files():
     file_name = "input"
-    for i in range(no_tests):
+    for i in range(nr_tests):
         f = open(input_dir + file_name + str(i + 1), 'w')
         f.write(str(max_nr_nodes) + ' ' + str(max_nr_edges) + '\n')
         adj_mat = calc_adj_matrix(gen_vertices())
@@ -50,3 +50,7 @@ def gen_input_files():
             for k in range(j + 1, max_nr_nodes):
                 f.write(str(j) + " " + str(k) + " " + str(adj_mat[j][k]) + "\n")
         f.close()
+
+def change_nr_nodes(new_nr):
+    global max_nr_nodes
+    max_nr_nodes = new_nr
