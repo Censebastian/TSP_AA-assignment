@@ -1,15 +1,6 @@
 import math
+from verify import verify
 from gen_input import calc_adj_matrix, gen_vertices
-
-distances = [
-    [0, 20, 42, 35],
-    [20, 0, 30, 34],
-    [42, 30, 0, 12],
-    [35, 34, 12, 0]
-]
-
-distance = calc_adj_matrix(gen_vertices())
-
 
 def held_karp(dists):
     """
@@ -19,6 +10,11 @@ def held_karp(dists):
     Receives a cost matrix, writes in an output file the length of the shortest road and the path found
     
     """
+    
+    if verify(dists) is not True:
+        print("Nu exista solutie")
+        return
+    
     n = len(dists) # Nr. of cities
     table = [[math.inf] * n for _ in range(1 << n)]
     parent = [[None] * n for _ in range(1 << n)]
@@ -58,10 +54,8 @@ def held_karp(dists):
         last = new_last
     
     tour = tour[::-1]
-    tour.append(0)
-    
-    f = open("demofile.txt", "w")
-    f.write("Optimal path: " + str(tour))
-    f.write("\nMinimum cost: " + str(min_cost))
 
-    return min_cost
+    f = open("held_karp.txt", "w")
+
+    f.write("Minimum cost: " + str(min_cost))
+    f.write("\nOptimal path: " + str(tour))
