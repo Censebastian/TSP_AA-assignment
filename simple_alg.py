@@ -1,5 +1,5 @@
 import math
-import verify
+from verify import verify
 from itertools import permutations
 from gen_input import calc_adj_matrix, gen_vertices
 
@@ -38,3 +38,5 @@ def tsp(dists):
     
     last = visited[-1]
     min_dist[-1] = dists[last][start]
+
+    return sum(min_dist)

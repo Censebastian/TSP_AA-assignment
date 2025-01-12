@@ -61,14 +61,41 @@ def duration_array(test_func):
         dur_arr.append(average)
     return dur_arr
 
-def distance_array(test_func1, test_func2):
+def run_alg(alg):
+    nr_tests = gen_input.nr_tests
+    input_dir = gen_input.input_dir
+    distance_arr = []
+    for i in range(nr_tests):
+        in_file = input_dir + "input" + str(i + 1)
+        adj_mat = input_to_mat(in_file)
+        distance_arr.append(alg(adj_mat))
+    return distance_arr 
+
+def dist_percentage(test_func1, test_func2):
     dist_arr = []
     for i in range(10, 21):
         gen_input.change_nr_nodes(i)
         gen_input.gen_input_files()
-        durations = test_func()
-        dist_arr.append(average)
-    return dist_arr 
+        dist1 = run_alg(test_func1)
+        dist2 = run_alg(test_func2)
+        perc_arr = []
+        for i in range(len(dist1)):
+            elem1 = dist1[i]
+            elem2 = dist2[i]
+            perc_arr.append((elem2 - elem1) * 100 / elem1)
+        dist_arr.append(sum(perc_arr) / len(perc_arr))
+    return sum(dist_arr) / len(dist_arr)
+
+def distance_array(test_func1, test_func2):
+    distances = []
+
+    dist1 = run_alg(test_func1)
+    dist2 = run_alg(test_func2)
+
+    distances.append(dist1)
+    distances.append(dist2)
+
+    return distances
 
 def plot_dur(in_file):
     f = open(in_file, "r")
@@ -92,6 +119,27 @@ def plot_dur(in_file):
     plt.tight_layout()
     plt.show()
 
+def plot_dist(hk_dist, nn_dist):
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    indexes = range(len(nn_dist))
+
+    axs[0].bar(indexes, nn_dist, color='blue', alpha=0.7)
+    axs[0].set_ylabel("Total Cost")
+    axs[0].set_title("Nearest Neighbour")
+    axs[0].grid(axis='y', linestyle='--', alpha=0.6)
+    axs[0].set_xticks([])
+
+    axs[1].bar(indexes, hk_dist, color='green', alpha=0.7)
+    axs[1].set_ylabel("Total Cost")
+    axs[1].set_title("Held-Karp")
+    axs[1].grid(axis='y', linestyle='--', alpha=0.6)
+    axs[1].set_xticks([])
+
+    plt.tight_layout()
+    plt.show()
+
+
 def output_test_results(out_file):
     f = open(out_file, 'w')
     nn_dur = duration_array(test_nn)
@@ -109,4 +157,8 @@ def run_algs():
     simple_alg.tsp(mat)
     held_karp.held_karp(mat)
 
-run_algs()
+#gen_input.change_nr_nodes(20)
+#gen_input.gen_input_files()
+
+dist = distance_array(held_karp.held_karp, simple_alg.tsp)
+plot_dist(dist[0], dist[1])
