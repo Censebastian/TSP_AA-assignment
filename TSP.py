@@ -61,6 +61,15 @@ def duration_array(test_func):
         dur_arr.append(average)
     return dur_arr
 
+def distance_array(test_func1, test_func2):
+    dist_arr = []
+    for i in range(10, 21):
+        gen_input.change_nr_nodes(i)
+        gen_input.gen_input_files()
+        durations = test_func()
+        dist_arr.append(average)
+    return dist_arr 
+
 def plot_dur(in_file):
     f = open(in_file, "r")
     dur_arr_nn = list(map(float, f.readline().strip().split()))

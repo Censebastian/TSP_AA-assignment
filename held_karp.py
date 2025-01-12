@@ -63,3 +63,5 @@ def held_karp(dists):
     f = open("demofile.txt", "w")
     f.write("Optimal path: " + str(tour))
     f.write("\nMinimum cost: " + str(min_cost))
+
+    return min_cost
