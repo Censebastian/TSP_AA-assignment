@@ -55,3 +55,6 @@ def held_karp(dists):
     
     tour = tour[::-1]
 
+    f = open("held_karp.txt", "w")
+    f.write("Minimum cost: " + str(min_cost))
+    f.write("\nOptimal path: " + str(tour))
