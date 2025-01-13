@@ -80,8 +80,8 @@ def draw_edge(x1, y1, x2, y2, color):
 
 def draw_edges(coord_arr, path, color):
     for i in range(len(path)):
-        first_node = coord_arr[i % len(path)]
-        second_node = coord_arr[(i + 1) % len(path)]
+        first_node = coord_arr[path[i % len(path)]]
+        second_node = coord_arr[path[(i + 1) % len(path)]]
         draw_edge(first_node.x, first_node.y, second_node.x, second_node.y, color)
         
 
@@ -115,12 +115,12 @@ def init_graded_sqrs():
     
     pen.up()
     pen.goto(-(side_length * 3/4 + line_width), side_length / 2 + line_width * 3 / 2)
-    pen.write("Current evaluation", False, align="center", font=("Arial", 2 * font_size, "normal"))
+    pen.write("Held-Karp", False, align="center", font=("Arial", 2 * font_size, "normal"))
     pen.down()
     
     pen.up()
     pen.goto(side_length * 3/4 + line_width, side_length / 2 + line_width * 3 / 2)
-    pen.write("Best path", False, align="center", font=("Arial", 2 * font_size, "normal"))
+    pen.write("Nearest Neighbor", False, align="center", font=("Arial", 2 * font_size, "normal"))
     pen.down()
 
 def draw_graph(coord_arr, path, left_bound, bottom_bound, color):
@@ -143,8 +143,8 @@ def draw_graphs(coord_arr, current_path, correct_path, temp):
     x_left = -(side_length * 5 / 4 + line_width)
     x_right = side_length / 4 + line_width
     y_right = y_left = -side_length / 2
-    if temp == True:
-        draw_temp_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
-    else:
-        draw_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
+    #if temp == True:
+    #    draw_temp_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
+    #else:
+    draw_graph(coord_arr, current_path, x_left, y_left, (255, 0, 0))
     draw_graph(coord_arr, correct_path, x_right, y_right, (10, 230, 57))

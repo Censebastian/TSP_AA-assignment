@@ -1,17 +1,15 @@
 from graphic import init_graded_sqrs, screen, draw_graphs, pen
-from gen_input import gen_vertices
+from gen_input import gen_vertices, change_nr_nodes, calc_adj_matrix
+from simple_alg import ret_path
+from held_karp import tour
 import random
 import time
 
-def make_path():
-    path = random.sample(range(0, 20), 20)
-    return path
-
-init_graded_sqrs()
-path = make_path()
+#change_nr_nodes(20)
 vertices = gen_vertices()
-draw_graphs(vertices, None, path, False)
-for i in range(50):
-    current_path = make_path()
-    draw_graphs(vertices, current_path, path, True)
+path_nn = ret_path(calc_adj_matrix(vertices))
+path_hk = tour(calc_adj_matrix(vertices))
+init_graded_sqrs()
+draw_graphs(vertices, path_hk, path_nn, False)
+#draw_graphs(vertices, path_hk, None, False)
 screen.exitonclick()

@@ -72,19 +72,21 @@ def run_alg(alg):
     return distance_arr 
 
 def dist_percentage(test_func1, test_func2):
-    dist_arr = []
+    dist_mat = []
+    dist_arr1 = []
+    dist_arr2 = []
     for i in range(10, 21):
         gen_input.change_nr_nodes(i)
         gen_input.gen_input_files()
+
         dist1 = run_alg(test_func1)
         dist2 = run_alg(test_func2)
-        perc_arr = []
-        for i in range(len(dist1)):
-            elem1 = dist1[i]
-            elem2 = dist2[i]
-            perc_arr.append((elem2 - elem1) * 100 / elem1)
-        dist_arr.append(sum(perc_arr) / len(perc_arr))
-    return sum(dist_arr) / len(dist_arr)
+
+        dist_arr1.append(sum(dist1) / len(dist1))
+        dist_arr2.append(sum(dist2) / len(dist2))
+    dist_mat.append(dist_arr1)
+    dist_mat.append(dist_arr2)
+    return dist_mat
 
 def distance_array(test_func1, test_func2):
     distances = []
@@ -122,23 +124,25 @@ def plot_dur(in_file):
 def plot_dist(hk_dist, nn_dist):
     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
 
-    indexes = range(len(nn_dist))
+    max_value = max(max(hk_dist), max(nn_dist))  # Determine the maximum value for scaling
+    min_value = min(min(hk_dist), min(nn_dist))  # Determine the minimum value for scaling
 
-    axs[0].bar(indexes, nn_dist, color='blue', alpha=0.7)
+    axs[0].bar(range(len(nn_dist)), nn_dist, color='blue', alpha=0.7)
     axs[0].set_ylabel("Total Cost")
     axs[0].set_title("Nearest Neighbour")
     axs[0].grid(axis='y', linestyle='--', alpha=0.6)
     axs[0].set_xticks([])
+    axs[0].set_ylim(min_value, max_value)
 
-    axs[1].bar(indexes, hk_dist, color='green', alpha=0.7)
+    axs[1].bar(range(len(hk_dist)), hk_dist, color='green', alpha=0.7)
     axs[1].set_ylabel("Total Cost")
     axs[1].set_title("Held-Karp")
     axs[1].grid(axis='y', linestyle='--', alpha=0.6)
     axs[1].set_xticks([])
+    axs[1].set_ylim(min_value, max_value)
 
     plt.tight_layout()
     plt.show()
-
 
 def output_test_results(out_file):
     f = open(out_file, 'w')
@@ -157,8 +161,38 @@ def run_algs():
     simple_alg.tsp(mat)
     held_karp.held_karp(mat)
 
-#gen_input.change_nr_nodes(20)
-#gen_input.gen_input_files()
+def calc_percentages(arr1, arr2):
+    perc_arr = []
+    for i in range(len(arr1)):
+        perc_arr.append((arr2[i] - arr1[i]) * 100 / arr2[i])
 
-dist = distance_array(held_karp.held_karp, simple_alg.tsp)
-plot_dist(dist[0], dist[1])
+    return perc_arr
+
+def display_table(data, column_labels, row_labels):
+    fig, ax = plt.subplots(figsize=(6, 3))
+    ax.axis("tight")
+    ax.axis("off")
+
+    table = ax.table(
+        cellText=data,
+        colLabels=column_labels,
+        rowLabels=row_labels,
+        cellLoc="center",
+        loc="center",
+    )
+
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
+    table.auto_set_column_width(col=list(range(len(column_labels))))
+
+    plt.show()
+
+column_labels = list(range(10, 21))
+row_labels = ["Held-Karp", "Nearest neighbor", "Difference(%)"]
+
+mat = dist_percentage(held_karp.held_karp, simple_alg.tsp)
+mat.append(calc_percentages(mat[0], mat[1]))
+
+mat = [[round(element, 2) for element in row] for row in mat]
+
+display_table(mat, column_labels, row_labels)
