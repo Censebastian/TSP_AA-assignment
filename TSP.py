@@ -155,11 +155,12 @@ def output_test_results(out_file):
         f.write(str(element) + ' ')
 
 def run_algs():
-    gen_input.change_nr_nodes(20)
-    arr = gen_input.gen_vertices()
-    mat = gen_input.calc_adj_matrix(arr)
-    simple_alg.tsp(mat)
-    held_karp.held_karp(mat)
+    for i in range(20):
+        gen_input.change_nr_nodes(20)
+        arr = gen_input.gen_vertices()
+        mat = gen_input.calc_adj_matrix(arr)
+        simple_alg.tsp(mat)
+        held_karp.held_karp(mat)
 
 def calc_percentages(arr1, arr2):
     perc_arr = []
@@ -187,12 +188,14 @@ def display_table(data, column_labels, row_labels):
 
     plt.show()
 
-column_labels = list(range(10, 21))
-row_labels = ["Held-Karp", "Nearest neighbor", "Difference(%)"]
+#column_labels = list(range(10, 21))
+#row_labels = ["Held-Karp", "Nearest neighbor", "Difference(%)"]
+#
+#mat = dist_percentage(held_karp.held_karp, simple_alg.tsp)
+#mat.append(calc_percentages(mat[0], mat[1]))
+#
+#mat = [[round(element, 2) for element in row] for row in mat]
+#
+#display_table(mat, column_labels, row_labels)
 
-mat = dist_percentage(held_karp.held_karp, simple_alg.tsp)
-mat.append(calc_percentages(mat[0], mat[1]))
-
-mat = [[round(element, 2) for element in row] for row in mat]
-
-display_table(mat, column_labels, row_labels)
+run_algs()

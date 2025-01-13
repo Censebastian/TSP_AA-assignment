@@ -39,7 +39,7 @@ def tsp(dists):
     last = visited[-1]
     min_dist[-1] = dists[last][start]
 
-    f = open("nearest_neighbor.txt", "w")
+    f = open("nearest_neighbor.txt", "a")
     f.write("Minimum cost: " + str(sum(min_dist)))
-    f.write("\nOptimal path " + str(visited))
+    f.write("\nOptimal path " + str(visited) + "\n")
 
