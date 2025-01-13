@@ -1,0 +1,98 @@
+<<<<<<< HEAD
+    return sum(min_dist)
+
+def ret_path(dists):
+    if verify(dists) is not True:
+        print("Nu exista solutie")
+        return
+
+    visited = []
+    min_dist = []
+
+    start = 0
+    neighbor = start
+    nr_nodes = len(dists)
+    noN = 0
+
+    while noN < nr_nodes and neighbor not in visited:
+        visited.append(neighbor)
+        noNei = 0
+        MIN = 0
+        
+        while noNei < len(dists[neighbor]):
+            if noNei not in visited:
+                if MIN == 0:
+                    MIN = dists[neighbor][noNei]
+                    neighbor = noNei
+                else:
+                    min_distance = min(dists[neighbor][noNei], MIN)
+                    if dists[neighbor][noNei] < MIN:
+                        MIN = min_distance
+                        neighbor = noNei
+            noNei += 1
+        min_dist.append(MIN)
+        noN += 1
+    
+    last = visited[-1]
+    min_dist[-1] = dists[last][start]
+
+    return visited
+=======
+    f = open("nearest_neighbor.txt", "w")
+
+    f.write("Minimum cost: " + str(sum(min_dist)))
+    f.write("\nOptimal path " + str(visited))
+
+
+<<<<<<< HEAD
+    return min_cost
+
+
+def tour(dists):
+    n = len(dists) # Nr. of cities
+    table = [[math.inf] * n for _ in range(1 << n)]
+    parent = [[None] * n for _ in range(1 << n)]
+    
+    # Base case
+    table[1][0] = 0;
+    
+    for mask in range(1 << n):
+        for last in range(n):
+            if not (mask & (1 << last)):
+                continue
+            for next in range(n):
+                if mask & (1 << n):
+                    continue
+                new_m = mask | (1 << next)
+                new_d = table[mask][last] + dists[last][next]
+                if new_d < table[new_m][next]:
+                    table[new_m][next] = new_d
+                    parent[new_m][next] = last
+   
+    tour = []
+    min_cost = math.inf
+    end_city = None
+    full_mask = (1 << n) - 1
+    for last in range(1, n):
+        cost = table[full_mask][last] + dists[last][0]
+        if cost < min_cost:
+            min_cost = cost
+            end_city = last
+    
+    last = end_city
+    mask = full_mask
+    while mask:
+        tour.append(last)
+        new_last = parent[mask][last]
+        mask ^= (1 << last)
+        last = new_last
+    
+    tour = tour[::-1]
+
+    return tour
+=======
+    f = open("held_karp.txt", "w")
+
+    f.write("Minimum cost: " + str(min_cost))
+    f.write("\nOptimal path: " + str(tour))
+>>>>>>> 6b3823d54d60d1572e43a7ac66bbbc2b43ec627a
